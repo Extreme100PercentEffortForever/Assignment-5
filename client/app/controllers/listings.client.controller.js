@@ -79,13 +79,7 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         return false;
       }
 	  
-      var editListing = {
-        name: $scope.name,
-        code: $scope.code,
-        address: $scope.address
-      };
-	  
-	  Listings.update($stateParams.listingId, editListing)
+	  Listings.update($stateParams.listingId, $scope.listing)
       .then(function(response) {
         //if the object is successfully saved redirect back to the list page
         $state.go('listings.list', { successMessage: 'Listing succesfully updated!' });
@@ -97,7 +91,7 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
 
     $scope.remove = function() {
 
-      $scope.error=null;
+      $scope.error = null;
       var target = $stateParams.listingId;
       Listings.delete(target)
       .then(function(response) {
