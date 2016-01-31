@@ -46,9 +46,6 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
     $scope.create = function(isValid) {
       $scope.error = null;
 
-      /*
-        Check that the form is valid. (https://github.com/paulyoder/angular-bootstrap-show-errors)
-       */
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'articleForm');
 
@@ -74,11 +71,28 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
     };
 
     $scope.update = function(isValid) {
-      /*
-        Fill in this function that should update a listing if the form is valid. Once the update has
-        successfully finished, navigate back to the 'listing.list' state using $state.go(). If an error
-        occurs, pass it to $scope.error.
-       */
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'articleForm');
+
+        return false;
+      }
+	  
+      var editListing = {
+        name: $scope.name,
+        code: $scope.code,
+        address: $scope.address
+      };
+	  
+	  Listings.update($stateParams.listingId, editListing)
+      .then(function(response) {
+        //if the object is successfully saved redirect back to the list page
+        $state.go('listings.list', { successMessage: 'Listing succesfully updated!' });
+      }, function(error) {
+        //otherwise display the error
+        $scope.error = 'Unable to save listing!\n' + error;
+      });
     };
 
     $scope.remove = function() {
@@ -88,10 +102,10 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       Listings.delete(target)
       .then(function(response) {
         //if the object is successfully saved redirect back to the list page
-        $state.go('listings.list', { successMessage: 'Listing succesfully created!' });
+        $state.go('listings.list', { successMessage: 'Listing succesfully removed!' });
       }, function(error) {
         //otherwise display the error
-        $scope.error = 'Unable to save listing!\n' + error;
+        $scope.error = 'Unable to remove listing!\n' + error;
       });
       //
       /*
