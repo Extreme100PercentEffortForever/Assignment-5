@@ -113,5 +113,9 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       },
       zoom: 14
     }
+    //////////////////////////
+
   }
 ]);
+
+/////////////////
