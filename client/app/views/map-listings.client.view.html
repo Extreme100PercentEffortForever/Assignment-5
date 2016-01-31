@@ -14,9 +14,11 @@
       <div class="page-header">
         <h3>Listings Map</h3>
         <div id="map_canvas">
-            <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
+          <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options" bounds="map.bounds">
+        <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'">
+        </ui-gmap-markers>
+    </ui-gmap-google-map>
 
-            </ui-gmap-google-map>
         </div>
         <!--
           Validation of forms is important to ensure that a user submits the correct information. Angular provides
