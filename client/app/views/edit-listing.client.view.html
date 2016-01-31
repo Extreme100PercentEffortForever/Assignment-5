@@ -1,1 +1,35 @@
-<!-- Fill in this file to create a UI view for editing listing entries. -->
+<div class="row" ng-controller="ListingsController" ng-init="findOne()">
+  <div class="col-md-offset-1 col-md-10 formWrapper">
+    <div class="page-header">
+      <h3>Update Listing</h3>
+      <form name="listingForm" class="form-horizontal" ng-submit="update(listingForm.$valid)">
+        <fieldset>
+          <div class="form-group" show-errors>
+            <label for="name">Name</label>
+            <input name="name" type="text" ng-model="listing.name" id="name" class="form-control" placeholder="Name" required>
+            <div ng-messages="listingFrom.name.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Listing name is required</p>
+            </div>
+          </div>
+          <div class="form-group" show-errors>
+            <label for="code">Code</label>
+            <input name="code" type="text" ng-model="listing.code" id="code" class="form-control" placeholder="Code" required>
+            <div ng-messages="listingFrom.code.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Listing code is required</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input name="address" type="text" ng-model="listing.address" id="address" class="form-control" placeholder="Address">
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-default">
+          </div>
+          <div ng-show="error" class="text-danger">
+            <strong ng-bind="error"></strong>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
