@@ -13,7 +13,7 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         $scope.error = 'Unable to retrieve listings!\n' + error;
       });
     };
-
+	
     $scope.findOne = function() {
       debugger;
       $scope.loading = true;
@@ -119,9 +119,58 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         latitude: 29.65163059999999,
         longitude: -82.3410518
       },
-      zoom: 14
+      zoom: 14,
+	  bounds: {}
     }
     //////////////////////////
+	
+    $scope.options = {
+      scrollwheel: true
+    };
+    var createMarker = function(i, bounds, idKey) {
+		
+      if (idKey == null) {
+        idKey = "id";
+      }
+
+      var ret = {
+        latitude: $scope.listings[i].coordinates.latitude,
+        longitude: $scope.listings[i].coordinates.longitude,
+        code: $scope.listings[i].code,
+		address: $scope.listings[i].address,
+		name: $scope.listings[i].name,
+		show: false
+      };
+	  
+      ret[idKey] = i;
+
+      return ret;
+    };
+	
+	$scope.onClick = function(marker, eventName, model) {
+        console.log("Clicked!");
+        model.show = !model.show;
+    };
+	
+    $scope.markers = [];
+    // Get the bounds from the map once it's loaded
+    $scope.$watch(function() {
+      return $scope.map.bounds;
+    }, function(nv, ov) {
+      // Only need to regenerate once
+      if (!ov.southwest && nv.southwest) {
+        var markersArr = [];
+		var listss = $scope.listings[1];
+        for (var i = 0; i < $scope.listings.length; i++) {
+			
+			listss = $scope.listings[i];
+			if ('undefined' !== typeof(listss.coordinates)) {
+				markersArr.push(createMarker(i, $scope.map.bounds))
+			}
+        }
+        $scope.markers = markersArr;
+      }
+    }, true);
 
   }
 ]);
